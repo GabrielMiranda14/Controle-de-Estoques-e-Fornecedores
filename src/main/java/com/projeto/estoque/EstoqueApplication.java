@@ -17,21 +17,15 @@ public class EstoqueApplication {
         
         @Bean 
         CommandLineRunner iniciar(ClienteRepository repositorio) {
-            return args -> {
-            
-                String nome = JOptionPane.showInputDialog("Digite o nome do Cliente:");
+            return args -> {           
                 
-                if (nome == null || nome.isBlank()) {
-                    JOptionPane.showMessageDialog(null, "Nome não infomado.");
-                    return;
+                if (repositorio.findByEmail("admin@empresa.com").isEmpty()) {
+                    // Cria o usuário padrão (Nome, Email, Senha)
+                    Cliente admin = new Cliente("Administrador Aço", "admin@empresa.com", "123456");
+                    repositorio.save(admin);
+                    System.out.println("Usuário padrão criado com sucesso no banco H2!");
                 }
-                
-                Cliente cliente = new Cliente(nome);
-                
-                repositorio.save(cliente);                              
-                        
-                JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!");
-                
+
             };
         
         }
