@@ -131,6 +131,9 @@
               <ComponentRef name="default"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnInsightsMouseClicked"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="btnSobre">
           <Properties>
@@ -153,6 +156,9 @@
               <ComponentRef name="default"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnSobreMouseClicked"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="btnSair">
           <Properties>

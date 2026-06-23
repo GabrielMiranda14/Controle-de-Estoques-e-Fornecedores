@@ -118,6 +118,11 @@ public class TelaMenu extends javax.swing.JFrame {
         btnInsights.setAlignmentY(1.0F);
         btnInsights.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnInsights.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnInsights.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnInsightsMouseClicked(evt);
+            }
+        });
         jMenuBar1.add(btnInsights);
 
         btnSobre.setBackground(new java.awt.Color(51, 102, 255));
@@ -127,6 +132,11 @@ public class TelaMenu extends javax.swing.JFrame {
         btnSobre.setAlignmentY(1.0F);
         btnSobre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnSobre.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSobre.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSobreMouseClicked(evt);
+            }
+        });
         jMenuBar1.add(btnSobre);
 
         btnSair.setBackground(new java.awt.Color(51, 102, 255));
@@ -211,6 +221,25 @@ public class TelaMenu extends javax.swing.JFrame {
         // 3. Fecha a tela de consulta atual para não acumular janelas
         this.dispose();
     }//GEN-LAST:event_btnEstoqueMouseClicked
+
+    private void btnInsightsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInsightsMouseClicked
+        // TODO add your handling code here:
+        TelaRelatórios relatorios = context.getBean(TelaRelatórios.class);
+        relatorios.inicializarTela();
+        this.setVisible(false);
+    }//GEN-LAST:event_btnInsightsMouseClicked
+
+    private void btnSobreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSobreMouseClicked
+        // TODO add your handling code here:
+        // 1. Pede a instância da TelaSobre para o Spring
+        TelaSobre sobre = context.getBean(TelaSobre.class);
+
+        // 2. Abre a tela
+        sobre.inicializarTela();
+
+        // 3. Esconde o menu principal
+        this.setVisible(false);
+    }//GEN-LAST:event_btnSobreMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel boasVindas;

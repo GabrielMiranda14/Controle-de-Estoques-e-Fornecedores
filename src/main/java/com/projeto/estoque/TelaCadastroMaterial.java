@@ -129,11 +129,21 @@ public class TelaCadastroMaterial extends javax.swing.JFrame {
         jMenu2.setBackground(new java.awt.Color(51, 102, 255));
         jMenu2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
         jMenu2.setText("   Insights/Relatórios   ");
+        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu2MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu2);
 
         jMenu3.setBackground(new java.awt.Color(51, 102, 255));
         jMenu3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
         jMenu3.setText("   Sobre   ");
+        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu3MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu3);
 
         jMenu4.setBackground(new java.awt.Color(51, 102, 255));
@@ -298,6 +308,25 @@ public class TelaCadastroMaterial extends javax.swing.JFrame {
         // 3. Esconde o menu principal para não acumular janelas abertas
         this.setVisible(false);
     }//GEN-LAST:event_btnConsultarMouseClicked
+
+    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
+        // TODO add your handling code here:
+        TelaRelatórios relatorios = context.getBean(TelaRelatórios.class);
+        relatorios.inicializarTela();
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
+        // TODO add your handling code here:
+        // 1. Pede a instância da TelaSobre para o Spring
+        TelaSobre sobre = context.getBean(TelaSobre.class);
+
+        // 2. Abre a tela
+        sobre.inicializarTela();
+
+        // 3. Esconde o menu principal
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenu3MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu btnConsultar;

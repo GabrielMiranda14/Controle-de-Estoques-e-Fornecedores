@@ -131,11 +131,21 @@ public class TelaConsultarEstoque extends javax.swing.JFrame {
         jMenu3.setBackground(new java.awt.Color(51, 102, 255));
         jMenu3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
         jMenu3.setText("   Insights/Relatórios   ");
+        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu3MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu3);
 
         jMenu4.setBackground(new java.awt.Color(51, 102, 255));
         jMenu4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
         jMenu4.setText("   Sobre   ");
+        jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu4MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu4);
 
         jMenu5.setBackground(new java.awt.Color(51, 102, 255));
@@ -265,6 +275,25 @@ public class TelaConsultarEstoque extends javax.swing.JFrame {
         // 3. Fecha a janela atual onde o usuário estava
         this.dispose();
     }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
+        // TODO add your handling code here:
+        TelaRelatórios relatorios = context.getBean(TelaRelatórios.class);
+        relatorios.inicializarTela();
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenu3MouseClicked
+
+    private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
+        // TODO add your handling code here:
+        // 1. Pede a instância da TelaSobre para o Spring
+        TelaSobre sobre = context.getBean(TelaSobre.class);
+
+        // 2. Abre a tela
+        sobre.inicializarTela();
+
+        // 3. Esconde o menu principal
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenu4MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;
