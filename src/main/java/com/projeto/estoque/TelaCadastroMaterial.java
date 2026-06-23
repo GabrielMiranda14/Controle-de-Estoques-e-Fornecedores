@@ -8,19 +8,45 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TelaCadastroMaterial extends javax.swing.JFrame {
-    
+            
+    // Adicione essa variável no topo, junto com o repositório:
+    private final org.springframework.context.ApplicationContext context;
+
     // O Spring precisa desse repositório para salvar os dados no banco
     private final MaterialRepository materialRepository;
 
     // Construtor preparado para o Spring Boot
-    public TelaCadastroMaterial(MaterialRepository materialRepository) {
+    public TelaCadastroMaterial(MaterialRepository materialRepository, org.springframework.context.ApplicationContext context) {
         this.materialRepository = materialRepository;
+        this.context = context; // Salvamos o contexto aqui
     }
     
     // Método leve para abrir a tela
     public void inicializarTela() {
         initComponents();
         setLocationRelativeTo(null);
+        setVisible(true);
+    }
+    
+    private Long idMaterialEmEdicao = null; // Coloque logo abaixo das outras variáveis do topo
+    
+    public void prepararParaEdicao(Material m) {
+        initComponents();
+        setLocationRelativeTo(null);
+
+        // Salva o ID do material que veio da tabela
+        this.idMaterialEmEdicao = m.getId();
+
+        // Preenche todos os campos de texto com os dados do material selecionado
+        txtNome.setText(m.getNome());
+        txtTipo.setText(m.getTipo());
+        txtQuantidade.setText(String.valueOf(m.getQuantidade()));
+        txtPeso.setText(String.valueOf(m.getPesoKg()));
+        txtPreco.setText(String.valueOf(m.getPreco()));
+
+        // Opcional: Mudar o texto do botão Salvar para "Atualizar" para o usuário saber que está editando
+        btnSalvar.setText("Atualizar Material");
+
         setVisible(true);
     }
 
@@ -46,14 +72,15 @@ public class TelaCadastroMaterial extends javax.swing.JFrame {
         txtPreco = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        btnMenu = new javax.swing.JMenu();
+        btnConsultar = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 102, 255));
         jLabel1.setText("Cadastro de Material");
 
@@ -79,10 +106,25 @@ public class TelaCadastroMaterial extends javax.swing.JFrame {
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(this::btnSalvarActionPerformed);
 
-        jMenu1.setBackground(new java.awt.Color(51, 102, 255));
-        jMenu1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
-        jMenu1.setText("   Menu   ");
-        jMenuBar1.add(jMenu1);
+        btnMenu.setBackground(new java.awt.Color(51, 102, 255));
+        btnMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
+        btnMenu.setText("   Menu   ");
+        btnMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnMenuMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(btnMenu);
+
+        btnConsultar.setBackground(new java.awt.Color(51, 102, 255));
+        btnConsultar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
+        btnConsultar.setText("Consultar Estoque");
+        btnConsultar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnConsultarMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(btnConsultar);
 
         jMenu2.setBackground(new java.awt.Color(51, 102, 255));
         jMenu2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
@@ -111,42 +153,36 @@ public class TelaCadastroMaterial extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGap(76, 76, 76)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSalvar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel3)
                                 .addComponent(txtTipo)
                                 .addComponent(jLabel2)
                                 .addComponent(txtNome)
                                 .addComponent(jLabel4)
                                 .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 8, Short.MAX_VALUE)))))
-                .addGap(33, 33, 33))
+                            .addComponent(jLabel1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(11, 11, 11)
                 .addComponent(jLabel1)
-                .addGap(17, 17, 17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -168,7 +204,7 @@ public class TelaCadastroMaterial extends javax.swing.JFrame {
                     .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSalvar)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -201,25 +237,71 @@ public class TelaCadastroMaterial extends javax.swing.JFrame {
 
         // 2. Cria o objeto Material com os dados digitados
         Material novoMaterial = new Material(nome, tipo, quantidade, peso, preco);
+        
+        // SE estivermos editando, nós avisamos o objeto qual é o ID dele antes de salvar
+        if (this.idMaterialEmEdicao != null) {
+            novoMaterial.setId(this.idMaterialEmEdicao);
+        }
 
         // 3. Salva no banco de dados usando o Spring Data!
-        materialRepository.save(novoMaterial);
+        materialRepository.save(novoMaterial); // O Spring atualiza se tiver ID, ou cria se for nulo!
 
         // 4. Avisa o usuário e limpa os campos
-        javax.swing.JOptionPane.showMessageDialog(this, "Material cadastrado com sucesso!");
+        javax.swing.JOptionPane.showMessageDialog(this, "Material salvo com sucesso!");
         
-        txtNome.setText("");
-        txtTipo.setText("");
-        txtQuantidade.setText("");
-        txtPeso.setText("");
-        txtPreco.setText("");
-
+        // SE estávamos editando, faz sentido voltar para a tela de consulta automaticamente para ver o resultado!
+        if (this.idMaterialEmEdicao != null) {
+            // Pede a tela de consulta para o Spring
+            TelaConsultarEstoque consulta = context.getBean(TelaConsultarEstoque.class);
+            // Abre ela (isso vai fazer o método preencherTabela() rodar de novo e puxar os dados atualizados!)
+            consulta.inicializarTela();
+            
+            // Limpa a variável de edição
+            this.idMaterialEmEdicao = null;
+            btnSalvar.setText("Salvar");
+            
+            // Fecha a tela de cadastro
+            this.dispose(); 
+        } else {
+            // Se for um cadastro novo (e você quiser continuar na tela para cadastrar mais), apenas limpa os campos:
+            txtNome.setText("");
+            txtTipo.setText("");
+            txtQuantidade.setText("");
+            txtPeso.setText("");
+            txtPreco.setText("");
+        }
+        
     } catch (NumberFormatException e) {
         javax.swing.JOptionPane.showMessageDialog(this, "Erro: Quantidade, Peso e Preço precisam ser números válidos.");
     }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
+    private void btnMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMenuMouseClicked
+        // TODO add your handling code here:
+        // 1. Pegamos a instância do Menu Principal que o Spring já criou
+        TelaMenu menu = context.getBean(TelaMenu.class);
+        
+        // 2. Abrimos o menu novamente (como o nome do usuário já foi carregado antes, podemos apenas dar setVisible)
+        menu.setVisible(true);
+        
+        // 3. Fechamos a tela de cadastro atual para não acumular janelas abertas
+        this.dispose();
+    }//GEN-LAST:event_btnMenuMouseClicked
+
+    private void btnConsultarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConsultarMouseClicked
+        // TODO add your handling code here:
+        TelaConsultarEstoque consulta = context.getBean(TelaConsultarEstoque.class);
+
+        // 2. Abre a tela de consulta (que já vai puxar os dados do banco automaticamente)
+        consulta.inicializarTela();
+
+        // 3. Esconde o menu principal para não acumular janelas abertas
+        this.setVisible(false);
+    }//GEN-LAST:event_btnConsultarMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu btnConsultar;
+    private javax.swing.JMenu btnMenu;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -227,7 +309,6 @@ public class TelaCadastroMaterial extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;

@@ -45,6 +45,7 @@ public class TelaMenu extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnEstoque = new javax.swing.JMenu();
+        btnConsultar = new javax.swing.JMenu();
         btnInsights = new javax.swing.JMenu();
         btnSobre = new javax.swing.JMenu();
         btnSair = new javax.swing.JMenu();
@@ -95,6 +96,21 @@ public class TelaMenu extends javax.swing.JFrame {
         });
         jMenuBar1.add(btnEstoque);
 
+        btnConsultar.setBackground(new java.awt.Color(51, 102, 255));
+        btnConsultar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
+        btnConsultar.setText("Consultar Estoque");
+        btnConsultar.setAlignmentX(1.0F);
+        btnConsultar.setAlignmentY(1.0F);
+        btnConsultar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnConsultar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnConsultar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnConsultarMouseClicked(evt);
+            }
+        });
+        btnConsultar.addActionListener(this::btnConsultarActionPerformed);
+        jMenuBar1.add(btnConsultar);
+
         btnInsights.setBackground(new java.awt.Color(51, 102, 255));
         btnInsights.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
         btnInsights.setText("   Insights/Relatórios  ");
@@ -134,17 +150,15 @@ public class TelaMenu extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(76, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
+                        .addGap(38, 38, 38)
                         .addComponent(boasVindas))
                     .addComponent(jLabel1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jLabel3)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                    .addComponent(jLabel3))
+                .addGap(74, 74, 74))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,6 +179,22 @@ public class TelaMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSairActionPerformed
 
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnConsultarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConsultarMouseClicked
+        // TODO add your handling code here:
+        // 1. Pede para o Spring a instância correta da Tela de Consulta
+        TelaConsultarEstoque consulta = context.getBean(TelaConsultarEstoque.class);
+
+        // 2. Abre a tela de consulta (que já vai puxar os dados do banco automaticamente)
+        consulta.inicializarTela();
+
+        // 3. Esconde o menu principal para não acumular janelas abertas
+        this.setVisible(false);
+    }//GEN-LAST:event_btnConsultarMouseClicked
+
     private void btnSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSairMouseClicked
         // TODO add your handling code here:
         System.exit(0); // Fecha o sistema completamente
@@ -172,13 +202,19 @@ public class TelaMenu extends javax.swing.JFrame {
 
     private void btnEstoqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEstoqueMouseClicked
         // TODO add your handling code here:
+        // 1. Pede a tela de cadastro para o Spring
         TelaCadastroMaterial cadastro = context.getBean(TelaCadastroMaterial.class);
-        cadastro.inicializarTela();
+
+        // 2. Abre a tela de cadastro limpa para um novo registro
+        cadastro.inicializarTela(); 
+
+        // 3. Fecha a tela de consulta atual para não acumular janelas
         this.dispose();
     }//GEN-LAST:event_btnEstoqueMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel boasVindas;
+    private javax.swing.JMenu btnConsultar;
     private javax.swing.JMenu btnEstoque;
     private javax.swing.JMenu btnInsights;
     private javax.swing.JMenu btnSair;
