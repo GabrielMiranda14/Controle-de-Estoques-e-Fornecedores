@@ -1,6 +1,6 @@
 package com.projeto.estoque;
 
-import javax.swing.JOptionPane;
+import java.awt.EventQueue;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -11,8 +11,15 @@ import org.springframework.context.annotation.Bean;
 public class EstoqueApplication {
 
 	public static void main(String[] args) {
+                // Inicializa o Spring Boot permitindo que interfaces gráficas (headless=false) funcionem
 		ConfigurableApplicationContext context = new
-                SpringApplicationBuilder(EstoqueApplication.class).headless(false).run(args);                                              
+                SpringApplicationBuilder(EstoqueApplication.class).headless(false).run(args); 
+                
+                // Abre a Tela de Login de dentro do contexto do Spring
+                EventQueue.invokeLater(() -> {
+                    TelaLogin telaLogin = context.getBean(TelaLogin.class);
+                    telaLogin.setVisible(true);
+                });
 	}
         
         @Bean 
