@@ -12,12 +12,15 @@ package com.projeto.estoque;
 @org.springframework.stereotype.Component
 public class TelaLogin extends javax.swing.JFrame {
     
+    private final org.springframework.context.ApplicationContext context;
+    
     // Repositório que usaremos para validar o login
     private final ClienteRepository clienteRepository;
     
     // Construtor modificado para receber o repositório do Spring
-    public TelaLogin(ClienteRepository clienteRepository) {
+    public TelaLogin(ClienteRepository clienteRepository, org.springframework.context.ApplicationContext context) {
         this.clienteRepository = clienteRepository;
+        this.context = context; // Salvamos o contexto aqui
         initComponents(); // Método automático do NetBeans que desenha os componentes
         setLocationRelativeTo(null); // Centraliza a tela no meio do monitor
     }
@@ -126,6 +129,11 @@ public class TelaLogin extends javax.swing.JFrame {
             if (cliente.getSenha().equals(senhaDigitada)) {
                 // Se o login der certo:
                 javax.swing.JOptionPane.showMessageDialog(this, "Bem-vindo, " + cliente.getNome() + "!");
+                // Pegamos a TelaMenu que o Spring criou
+                TelaMenu menu = context.getBean(TelaMenu.class);
+                menu.inicializarTela(cliente.getNome()); // Abre o menu
+                this.dispose(); // Fecha a tela de login
+    
             } else {
                 // Se a senha estiver errada
                 javax.swing.JOptionPane.showMessageDialog(this, "Senha incorreta. Tente novamente.");
