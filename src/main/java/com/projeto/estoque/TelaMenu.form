@@ -80,6 +80,9 @@
               <ComponentRef name="default"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnEstoqueMouseClicked"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="btnInsights">
           <Properties>

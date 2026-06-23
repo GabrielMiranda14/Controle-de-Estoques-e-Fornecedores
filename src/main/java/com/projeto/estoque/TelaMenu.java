@@ -9,8 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class TelaMenu extends javax.swing.JFrame {
     
-    public TelaMenu() {
-        // O construtor fica vazio para o Spring não travar na inicialização
+    private final org.springframework.context.ApplicationContext context;
+    
+    public TelaMenu(org.springframework.context.ApplicationContext context) {
+        this.context = context;
     }
 
     // Método para carregar o visual e mostrar a tela
@@ -86,6 +88,11 @@ public class TelaMenu extends javax.swing.JFrame {
         btnEstoque.setAlignmentY(1.0F);
         btnEstoque.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnEstoque.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEstoque.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEstoqueMouseClicked(evt);
+            }
+        });
         jMenuBar1.add(btnEstoque);
 
         btnInsights.setBackground(new java.awt.Color(51, 102, 255));
@@ -162,6 +169,13 @@ public class TelaMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0); // Fecha o sistema completamente
     }//GEN-LAST:event_btnSairMouseClicked
+
+    private void btnEstoqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEstoqueMouseClicked
+        // TODO add your handling code here:
+        TelaCadastroMaterial cadastro = context.getBean(TelaCadastroMaterial.class);
+        cadastro.inicializarTela();
+        this.dispose();
+    }//GEN-LAST:event_btnEstoqueMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel boasVindas;
